@@ -53,7 +53,7 @@ def detect_objects(yolo_detector, image_path: str) -> dict:
     :param image_path: root to the image to be processed
     '''
     # Detect object with Yolov8 nano, casting classes to Person and Car according to coco128 dataset
-    detections = yolo_detector(source=image_path, conf=0.75, classes=[0, 2], verbose=False, stream=False)
+    detections = yolo_detector(source=image_path, conf=0.5, classes=[0, 2], verbose=False, stream=False)
 
     results = {"image_metadata": {"file_root": image_path}}
 
