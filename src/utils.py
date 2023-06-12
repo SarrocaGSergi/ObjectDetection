@@ -45,7 +45,7 @@ def bbx_to_json(bbx: np.ndarray, label: int, score: float) -> dict:
     return bbx_dict
 
 
-def detect_objects(yolo_detector, image_path: str):
+def detect_objects(yolo_detector, image_path: str) -> dict:
     '''
     This function uses a object detector alreay initialized by the user and detects persons and cars in an image.
     Finally, it updates the object where we are storing our results.
