@@ -1,11 +1,9 @@
-version: '3.9'
+version: '3'
 services:
-  rest-api:
-    build:
-      context: .
-      dockerfile: ./docker/Dockerfile
-    image: detector:latest
-    container_name: objectdetector
-    command: uvicorn api:app --host 0.0.0.0 --port 8000
-    ports:
-    - 8000:8000
+    core_api:
+        build: .
+        container_name: "detect-container"
+        ports:
+            - "8000:8000"
+        volumes:
+            - ./src/:/app

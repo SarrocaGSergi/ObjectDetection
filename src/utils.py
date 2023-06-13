@@ -1,6 +1,8 @@
 import os
-from src import _ROOT
 import numpy as np
+from pathlib import Path
+
+_ROOT = Path(__file__).parents[1]
 
 
 def save_file(file_bytes: bytes, name: str) -> str:
@@ -43,7 +45,7 @@ def bbx_to_json(bbx: np.ndarray, label: int, score: float) -> dict:
     return bbx_dict
 
 
-def detect_objects(yolo_detector, storage_object, image_path: str):
+def detect_objects(yolo_detector, image_path: str) -> dict:
     '''
     This function uses a object detector alreay initialized by the user and detects persons and cars in an image.
     Finally, it updates the object where we are storing our results.
@@ -51,7 +53,7 @@ def detect_objects(yolo_detector, storage_object, image_path: str):
     :param image_path: root to the image to be processed
     '''
     # Detect object with Yolov8 nano, casting classes to Person and Car according to coco128 dataset
-    detections = yolo_detector(source=image_path, conf=0.75, classes=[0, 2], verbose=False, stream=False)
+    detections = yolo_detector(source=image_path, conf=0.5, classes=[0, 2], verbose=False, stream=False)
 
     results = {"image_metadata": {"file_root": image_path}}
 
@@ -62,4 +64,5 @@ def detect_objects(yolo_detector, storage_object, image_path: str):
         conf = image_result.boxes.conf.cpu().numpy()[0]
         box_dict = bbx_to_json(box_list, label=cls, score=conf)
         results["image_metadata"][f"det_{idx}"] = box_dict
-    storage_object.update_detections(new_dict=results)
+
+    return results
